@@ -4,7 +4,7 @@ PREDICTOR=2 macht nochmals 20 prozent weniger.
 
 
 gdal_translate -co TILED=YES -co PHOTOMETRIC=RGB -a_srs EPSG:2056 Mosaik0.IMG Mosaik0.tif
-gdaladdo --config PHOTOMETRIC_OVERVIEW RGB -ro Mosaik0.tif 2 4 8 16 32 64
+gdaladdo --config PHOTOMETRIC_OVERVIEW RGB --config COMPRESS_OVERVIEW DEFLATE -ro Mosaik0.tif 2 4 8 16 32 64
 
 
 # Cutten 
@@ -33,6 +33,8 @@ gdal_translate -b 1 -b 2 -b 3 -co TILED=YES cut__3band_qgis_Mosaik0.tif cut__3ba
 
 gdalwarp --config GDAL_CACHEMAX 500 -wm 500 -co TILED=YES -co PHOTOMETRIC=RGB -s_srs EPSG:2056 -t_srs EPSG:2056 -cutline worldview3_perimeter.shp -cl worldview3_perimeter -dstnodata "255 255 255" -co PHOTOMETRIC=RGB cut__3band_qgis_3band_Mosaik0.tif cut__3band_qgis_3band_cut_Mosaik0.tif
 
+
+#WEGEN nodata
 convert cut__3band_qgis_3band_cut_Mosaik0.tif fubar.tif
 
  Then I do 'gdalwarp -wo "INIT_DEST=255,0,255" square.tif square_cut.tif -cutline small_square_with_hole.csv' and I get a nice extract of my white square with a hole and a background of pink. 
